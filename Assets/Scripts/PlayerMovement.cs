@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public GridSystem grid;
+    public GridSystem Grid;
 
     private Rigidbody _rb;
 
-    private Node? _previousNode;
+    private Node _previousNode;
+    public Node ActualNode { get; set; }
 
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        ActualNode = Grid.GetNode(_rb.position);
+        Grid.ActiveNode(ActualNode, Color.green);
+        _previousNode = ActualNode;
     }
 
     void FixedUpdate()
@@ -31,11 +35,19 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var node = grid.GetNode(_rb.position);
+        var node = Grid.GetNode(_rb.position);
 
         if (node != null)
         {
-            grid.ActiveNode(node);
+            if (!node.Equals(ActualNode))
+            {
+                Grid.ActiveNode(node, Color.green);
+                Grid.DesactiveNode(ActualNode);
+
+                _previousNode = ActualNode;
+                ActualNode = node;
+            }
+            
         }
     }
 }

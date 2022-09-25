@@ -21,7 +21,7 @@ public class GridSystem : MonoBehaviour
     public bool DrawGrid = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         var bounds = GetComponent<MeshFilter>().mesh.bounds;
 
@@ -47,7 +47,7 @@ public class GridSystem : MonoBehaviour
         if(Nodes == null || Nodes.Count == 0) return;
         
         foreach(var node in Nodes) {
-            Gizmos.color = (!node.Active) ? Color.blue : Color.red; 
+            Gizmos.color = (!node.Active) ? Color.blue : node.ActiveColor;
             
             var center = new Vector3(node.X, 0, node.Y) - _offset;
             var size = new Vector3(0.5f, 0.5f, 0.5f);
@@ -85,15 +85,12 @@ public class GridSystem : MonoBehaviour
         return Nodes[(int) posIndex.z * _width + (int) posIndex.x];
     }
 
-    public void ActiveNode(Node node)
+    public void ActiveNode(Node node, Color color)
     {
-        foreach (var n in Nodes)
-        {
-            if (n.Equals(node)) continue;
-            n.Active = false;
-        }
-
         node.Active = true;
+        node.ActiveColor = color;
     }
+
+    public void DesactiveNode(Node node) { node.Active = false; }
 
 }

@@ -9,6 +9,7 @@ public class Node
     public int Y { get; set; }
 
     public bool Active { get; set; }
+    public Color ActiveColor { get; set; }
 
     public Node(int index, int x, int y)
     {
@@ -21,6 +22,6 @@ public class Node
     public override bool Equals(object obj)
     {
         Node n = (Node)obj;
-        return Index.Equals(n.Index);
+        return n == null ? false : Index.Equals(n.Index);
     }
 }
