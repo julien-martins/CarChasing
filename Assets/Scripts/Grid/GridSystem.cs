@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using JetBrains.Annotations;
 using Microsoft.Win32.SafeHandles;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Random = System.Random;
@@ -85,6 +86,13 @@ public class GridSystem : MonoBehaviour
         return Nodes[(int) posIndex.z * _width + (int) posIndex.x];
     }
 
+    public Node GetNodeWithIndex(int x, int y)
+    {
+        if (x < 0 || y < 0 || x >= _width || y >= _height) return null; 
+        
+        return Nodes[y * _width + x];
+    }
+
     public void ActiveNode(Node node, Color color)
     {
         node.Active = true;
@@ -93,4 +101,20 @@ public class GridSystem : MonoBehaviour
 
     public void DesactiveNode(Node node) { node.Active = false; }
 
+    public bool AllExplored()
+    {
+        foreach (Node n in Nodes)
+        {
+            if (!n.Explored) return false;
+        }
+
+        return true;
+    }
+    public void ShowAllDistanceNodes()
+    {
+        foreach (Node n in Nodes)
+        {
+            Debug.Log(n);
+        }
+    }
 }

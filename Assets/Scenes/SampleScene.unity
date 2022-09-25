@@ -135,8 +135,9 @@ GameObject:
   - component: {fileID: 204264967}
   - component: {fileID: 204264966}
   - component: {fileID: 204264965}
-  - component: {fileID: 204264969}
   - component: {fileID: 204264970}
+  - component: {fileID: 204264971}
+  - component: {fileID: 204264969}
   m_Layer: 0
   m_Name: Enemy2
   m_TagString: Untagged
@@ -235,8 +236,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Grid: {fileID: 1158775238}
-  Player: {fileID: 0}
   Algorithm: 1
+  DrawDebug: 0
+  EndNode: {fileID: 691828195}
 --- !u!54 &204264970
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -253,6 +255,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &204264971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204264964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 939c119db0192564a8ebb91d4bd332ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Grid: {fileID: 1158775238}
 --- !u!1 &691828188
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,6 +280,7 @@ GameObject:
   - component: {fileID: 691828191}
   - component: {fileID: 691828190}
   - component: {fileID: 691828189}
+  - component: {fileID: 691828195}
   - component: {fileID: 691828193}
   - component: {fileID: 691828194}
   m_Layer: 0
@@ -364,7 +380,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae727b73e30676c429e636fa9c383b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Grid: {fileID: 1158775238}
 --- !u!54 &691828194
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -381,6 +396,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &691828195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691828188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 939c119db0192564a8ebb91d4bd332ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Grid: {fileID: 1158775238}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,15 +515,16 @@ GameObject:
   - component: {fileID: 947808796}
   - component: {fileID: 947808795}
   - component: {fileID: 947808794}
-  - component: {fileID: 947808798}
   - component: {fileID: 947808799}
+  - component: {fileID: 947808800}
+  - component: {fileID: 947808798}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &947808794
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -587,8 +616,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Grid: {fileID: 1158775238}
-  Player: {fileID: 0}
   Algorithm: 0
+  DrawDebug: 0
+  EndNode: {fileID: 0}
 --- !u!54 &947808799
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -605,6 +635,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &947808800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947808793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 939c119db0192564a8ebb91d4bd332ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Grid: {fileID: 1158775238}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
