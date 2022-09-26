@@ -83,6 +83,8 @@ public class GridSystem : MonoBehaviour
     {
         var posIndex = Vector3Int.RoundToInt(pos + _offset);
 
+        if (posIndex.x < 0 || posIndex.z < 0 || posIndex.x >= _width || posIndex.z >= _height) return null;
+
         return Nodes[(int) posIndex.z * _width + (int) posIndex.x];
     }
 

@@ -13,6 +13,9 @@ public class Node
 
     public int Poids { get; set; }
 
+    public int Heuristique { get; set; }
+    public int Cout { get; set; }
+
     public Node Pred { get; set; }
 
     public bool Explored { get; set; }
@@ -30,6 +33,10 @@ public class Node
         Poids = 1;
         Pred = null;
         Explored = false;
+        
+        //Astar
+        Heuristique = 0;
+        Cout = 0;
     }
 
     public override bool Equals(object obj)

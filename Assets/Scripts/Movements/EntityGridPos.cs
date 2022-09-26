@@ -9,7 +9,13 @@ public class EntityGridPos : MonoBehaviour
     public Node ActualNode { get; set; }
     public Node PreviousNode { get; set; }
 
-    void Start(){
+    void Awake(){
+        _rb = GetComponent<Rigidbody>();
+        ActualNode = Grid.GetNode(_rb.position);
+        PreviousNode = ActualNode;
+    }
+
+    public void ForceInit() {
         _rb = GetComponent<Rigidbody>();
         ActualNode = Grid.GetNode(_rb.position);
         PreviousNode = ActualNode;
