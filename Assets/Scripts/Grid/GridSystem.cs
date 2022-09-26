@@ -36,12 +36,6 @@ public class GridSystem : MonoBehaviour
         CreateGrid();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void OnDrawGizmos()
     {
         if (!DrawGrid) return;

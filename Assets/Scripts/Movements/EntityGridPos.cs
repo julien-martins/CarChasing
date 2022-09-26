@@ -20,7 +20,7 @@ public class EntityGridPos : MonoBehaviour
         ActualNode = Grid.GetNode(_rb.position);
         PreviousNode = ActualNode;
     }
-
+    
     void Update(){
         var node = Grid.GetNode(_rb.position);
 

@@ -24,25 +24,32 @@ public class Pathfinding : MonoBehaviour
 
     private Rigidbody _rb;
 
-    private bool once = false;
+    private List<Vector2Int> neighborsDir;
+
+    private List<Node> _closed;
+    private List<Node> _open;
+
     // Start is called before the first frame update
-    void Start()
+    public void Init()
     {
         _startNode = GetComponent<EntityGridPos>();
         _rb = GetComponent<Rigidbody>();
-        
+
+        neighborsDir = new() { new Vector2Int(1, 0), new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(0, -1) };
+
+        _closed = new();
+        _open = new();
+
         //Force the initialisation of the position on the grid
         _startNode.ForceInit();
         EndNode.ForceInit();
 
         Grid.ActiveNode(_startNode.ActualNode, Color.green);
-        
         Grid.ActiveNode(EndNode.ActualNode, Color.red);
-        
     }
 
     // Update is called once per frame
-    void Update()
+    public void ExecutePath()
     {
         switch (Algorithm)
         {
@@ -85,18 +92,29 @@ public class Pathfinding : MonoBehaviour
         return false;
     }
 
+    void InitAstar()
+    {
+        _open.Clear();
+        _closed.Clear();
+
+        foreach (Node n in Grid.Nodes)
+        {
+            n.Heuristique = 0;
+            n.Cout = 0;
+            n.Pred = null;
+        }
+    }
+
     void UpdateAstar()
     {
-        List<Vector2Int> neighborsDir = new() { new Vector2Int(1, 0), new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(0, -1) };
+        InitAstar();
         
-        List<Node> closed = new();
-        List<Node> open = new();
-        open.Add(_startNode.ActualNode);
+        _open.Add(_startNode.ActualNode);
 
-        while (open.Count > 0)
+        while (_open.Count > 0)
         {
-            Node u = MinAstar(open);
-            open.Remove(u);
+            Node u = MinAstar(_open);
+            _open.Remove(u);
 
             //Si Astar trouve l'objectif
             if (u.Equals(EndNode.ActualNode)) return;
@@ -107,17 +125,17 @@ public class Pathfinding : MonoBehaviour
                 Node v = Grid.GetNodeWithIndex(u.X + dir.x, u.Y + dir.y);
                 if(v == null) continue;
 
-                if (!(NodeInOpenList(v, open) || closed.Contains(v)))
+                if (!(NodeInOpenList(v, _open) || _closed.Contains(v)))
                 {
                     v.Pred = u;
                     v.Cout = u.Cout + 1;
                     v.Heuristique = v.Cout + DistAstar(v, EndNode.ActualNode);
 
-                    open.Add(v);
+                    _open.Add(v);
                 }
                 
             }
-            closed.Add(u);
+            _closed.Add(u);
         }
 
     }
@@ -130,7 +148,6 @@ public class Pathfinding : MonoBehaviour
         {
             n.Distance = int.MaxValue;
             n.Explored = false;
-            n.Active = false;
         }
 
         _startNode.ActualNode.Distance = 0;
@@ -164,12 +181,8 @@ public class Pathfinding : MonoBehaviour
 
     void UpdateDjikstra()
     {
-        List<Vector2Int> neighborsDir = new() { new Vector2Int(1, 0), new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(0, -1) };
-
         InitDjikstra();
 
-        
-        //List<Node> Q = new(Grid.Nodes);
         while(!Grid.AllExplored())
         {
             Node n1 = MinDjikstra(Grid.Nodes);
