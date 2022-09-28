@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+
         if (Input.GetAxisRaw("Drift") > 0)
         {
             Traction = 1.0f;
@@ -53,12 +54,7 @@ public class PlayerMovement : MonoBehaviour
     {
         var horizontal = Input.GetAxis("Horizontal");
         var vertical = Input.GetAxis("Vertical");
-
-        if( (horizontal > 0 || vertical > 0) && !AISystem.StartIA)
-        {
-            AISystem.StartIA = true;
-        }
-
+        
         _rb.position += move * Time.deltaTime;
 
         move += _rb.transform.forward * vertical * MoveSpeed * Time.deltaTime;

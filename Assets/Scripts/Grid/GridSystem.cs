@@ -43,11 +43,10 @@ public class GridSystem : MonoBehaviour
         
         foreach(var node in Nodes) {
             Color color = Color.blue;
-            if (node.Active)
-            {
-                if (node.Accesible) color = node.ActiveColor;
-                else color = Color.magenta;
-            }
+
+            if (node.Active) color = node.ActiveColor;
+            if (!node.Accesible) color = Color.magenta;
+
             Gizmos.color = color;
 
             var center = new Vector3(node.X, 0, node.Y) - _offset;
@@ -83,13 +82,11 @@ public class GridSystem : MonoBehaviour
 
     }
 
-    [CanBeNull]
     public Node GetNode(float x, float y)
     {
         return GetNode(new Vector3(x, 0, y));
     }
 
-    [CanBeNull]
     public Node GetNode(Vector3 pos)
     {
         var posIndex = Vector3Int.RoundToInt(pos + _offset);
@@ -106,9 +103,30 @@ public class GridSystem : MonoBehaviour
 
     public Node GetNodeWithIndex(int x, int y)
     {
-        if (x < 0 || y < 0 || x >= _width || y >= _height) return null; 
-        
         return Nodes[y * _width + x];
+    }
+
+    public List<Node> GetNeighbours(Node node)
+    {
+        List<Node> result = new();
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0) continue;
+
+                int checkX = node.X + x;
+                int checkY = node.Y + y;
+
+                if (checkX >= 0 && checkX <= _width && checkY >= 0 && checkY <= _height)
+                {
+                    result.Add(GetNodeWithIndex(checkX, checkY));
+                }
+            }
+        }
+
+        return result;
     }
 
     public void ActiveNode(Node node, Color color)
@@ -135,4 +153,8 @@ public class GridSystem : MonoBehaviour
             Debug.Log(n);
         }
     }
+
+    public int GetWidth() => _width;
+    public int GetHeight() => _height;
+
 }

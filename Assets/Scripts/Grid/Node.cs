@@ -43,12 +43,6 @@ public class Node
         Cout = 0;
     }
 
-    public override bool Equals(object obj)
-    {
-        Node n = (Node)obj;
-        return n == null ? false : Index.Equals(n.Index);
-    }
-
     public override string ToString()
     {
         return X + "/" + Y + " ==> " + Distance + " | " + Explored;
