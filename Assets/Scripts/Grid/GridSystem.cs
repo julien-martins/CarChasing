@@ -42,8 +42,14 @@ public class GridSystem : MonoBehaviour
         if(Nodes == null || Nodes.Count == 0) return;
         
         foreach(var node in Nodes) {
-            Gizmos.color = (!node.Active) ? Color.blue : node.ActiveColor;
-            
+            Color color = Color.blue;
+            if (node.Active)
+            {
+                if (node.Accesible) color = node.ActiveColor;
+                else color = Color.magenta;
+            }
+            Gizmos.color = color;
+
             var center = new Vector3(node.X, 0, node.Y) - _offset;
             var size = new Vector3(0.5f, 0.5f, 0.5f);
 
@@ -60,7 +66,18 @@ public class GridSystem : MonoBehaviour
         {
             for (int i = 0; i < _width; ++i)
             {
-                Nodes.Add(new Node(i * _width + j, i, j));
+                Node nodeToAdd = new Node(i * _width + j, i, j);
+                //Test if there are object top of it
+                Collider[] colliders = Physics.OverlapBox(new Vector3(i, 0.0f, j) - _offset, new Vector3(0.5f, 0.5f, 0.5f));
+                foreach(Collider collider in colliders)
+                {
+                    if (collider.CompareTag("Obstacle"))
+                    {
+                        nodeToAdd.Accesible = false;
+                    }
+                }
+
+                Nodes.Add(nodeToAdd);
             }
         }
 
@@ -80,6 +97,11 @@ public class GridSystem : MonoBehaviour
         if (posIndex.x < 0 || posIndex.z < 0 || posIndex.x >= _width || posIndex.z >= _height) return null;
 
         return Nodes[(int) posIndex.z * _width + (int) posIndex.x];
+    }
+
+    public Vector3 GetPos(Node n)
+    {
+        return new Vector3(n.X, 0, n.Y) - _offset;
     }
 
     public Node GetNodeWithIndex(int x, int y)

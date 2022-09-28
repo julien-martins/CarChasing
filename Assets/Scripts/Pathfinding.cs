@@ -19,6 +19,8 @@ public class Pathfinding : MonoBehaviour
 
     public bool DrawDebug = false;
 
+    public float PathSpeed = 5.0f;
+
     public EntityGridPos EndNode;
     private EntityGridPos _startNode;
 
@@ -28,6 +30,8 @@ public class Pathfinding : MonoBehaviour
 
     private List<Node> _closed;
     private List<Node> _open;
+
+    private List<Node> _path;
 
     // Start is called before the first frame update
     public void Init()
@@ -44,6 +48,9 @@ public class Pathfinding : MonoBehaviour
         _startNode.ForceInit();
         EndNode.ForceInit();
 
+        _startNode.ActualNode.Accesible = false;
+        EndNode.ActualNode.Accesible = false;
+
         Grid.ActiveNode(_startNode.ActualNode, Color.green);
         Grid.ActiveNode(EndNode.ActualNode, Color.red);
     }
@@ -55,11 +62,11 @@ public class Pathfinding : MonoBehaviour
         {
             case AlgorithmType.Astar:
                 UpdateAstar();
-                ShorterPath();
+                _path = ShorterPath();
                 break;
             case AlgorithmType.Djikstra:
                 UpdateDjikstra();
-                ShorterPath();
+                _path = ShorterPath();
                 break;
         }
     }
@@ -69,7 +76,7 @@ public class Pathfinding : MonoBehaviour
     Node MinAstar(List<Node> nodes)
     {
         Node result = null;
-
+        
         foreach (var node in nodes)
         {
             if (result == null || node.Heuristique < result.Heuristique)
@@ -86,7 +93,7 @@ public class Pathfinding : MonoBehaviour
     {
         foreach (Node node in open)
         {
-            if (node.Equals(n) && node.Cout < n.Cout) return true;
+            if (node.Equals(n) && n.Cout < node.Cout) return true;
         }
 
         return false;
@@ -125,7 +132,7 @@ public class Pathfinding : MonoBehaviour
                 Node v = Grid.GetNodeWithIndex(u.X + dir.x, u.Y + dir.y);
                 if(v == null) continue;
 
-                if (!(NodeInOpenList(v, _open) || _closed.Contains(v)))
+                if (!( NodeInOpenList(v, _open) || _closed.Contains(v) ) && v.Accesible)
                 {
                     v.Pred = u;
                     v.Cout = u.Cout + 1;
@@ -137,7 +144,7 @@ public class Pathfinding : MonoBehaviour
             }
             _closed.Add(u);
         }
-
+        
     }
     #endregion
 
@@ -192,7 +199,7 @@ public class Pathfinding : MonoBehaviour
             foreach (var dir in neighborsDir)
             {
                 Node n2 = Grid.GetNodeWithIndex(n1.X + dir.x, n1.Y + dir.y);
-                if(n2 == null) continue;
+                if(n2 == null || !n2.Accesible) continue;
 
                 DistDjikstra(n1, n2);
             }
@@ -200,6 +207,24 @@ public class Pathfinding : MonoBehaviour
         }
     }
     #endregion
+
+    public void MoveNextNode()
+    {
+        while (_path.Count > 0)
+        {
+            Node n = _path[_path.Count - 1];
+            _path.RemoveAt(_path.Count - 1);
+
+            Vector3 gridPos = Grid.GetPos(n);
+            
+            Vector3 pos = Vector3.Slerp(_rb.position, gridPos, Time.deltaTime * PathSpeed);
+            pos.y = _rb.position.y;
+            _rb.transform.position = pos;   
+
+            Quaternion rot = Quaternion.Slerp(_rb.transform.rotation, Quaternion.Euler(gridPos), Time.deltaTime * PathSpeed);
+            _rb.transform.rotation = rot;
+        }
+    }
 
     List<Node> ShorterPath()
     {
@@ -211,7 +236,7 @@ public class Pathfinding : MonoBehaviour
         {
             result.Add(n);
             n = n.Pred;
-            Grid.ActiveNode(n, Color.cyan);
+            if(n != null) Grid.ActiveNode(n, Color.cyan);
         }
         result.Add(_startNode.ActualNode);
 

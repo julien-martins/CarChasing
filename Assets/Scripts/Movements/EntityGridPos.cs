@@ -26,7 +26,7 @@ public class EntityGridPos : MonoBehaviour
 
         if (node != null)
         {
-            if (!node.Equals(ActualNode))
+            if (!node.Equals(ActualNode) && node.Accesible)
             {
                 PreviousNode = ActualNode;
                 ActualNode = node;

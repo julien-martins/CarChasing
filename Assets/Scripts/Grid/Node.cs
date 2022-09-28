@@ -23,6 +23,8 @@ public class Node
     public bool Active { get; set; }
     public Color ActiveColor { get; set; }
 
+    public bool Accesible { get; set; }
+
     public Node(int index, int x, int y)
     {
         Index = index;
@@ -33,6 +35,8 @@ public class Node
         Poids = 1;
         Pred = null;
         Explored = false;
+
+        Accesible = true;
         
         //Astar
         Heuristique = 0;

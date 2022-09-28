@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 move;
 
+    Collider[] colliders;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,12 +46,18 @@ public class PlayerMovement : MonoBehaviour
             left.emitting = false;
             right.emitting = false;
         }
+
     }
 
     void FixedUpdate()
     {
         var horizontal = Input.GetAxis("Horizontal");
         var vertical = Input.GetAxis("Vertical");
+
+        if( (horizontal > 0 || vertical > 0) && !AISystem.StartIA)
+        {
+            AISystem.StartIA = true;
+        }
 
         _rb.position += move * Time.deltaTime;
 
@@ -58,8 +66,19 @@ public class PlayerMovement : MonoBehaviour
         move = Vector3.ClampMagnitude(move, MaxSpeed);
 
         if(move.magnitude > 0)
-            _rb.transform.Rotate(Vector3.up * horizontal * SteerAngle * Time.deltaTime);
+            _rb.transform.Rotate(Vector3.up * horizontal * move.magnitude * SteerAngle * Time.deltaTime);
         
         move = Vector3.Lerp(move.normalized, transform.forward, Traction * Time.deltaTime) * move.magnitude;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            move *= 0.20f;
+        } else if (collision.gameObject.CompareTag("Police"))
+        {
+            Debug.Log("Vous avez ete capture !");
+        }
     }
 }
