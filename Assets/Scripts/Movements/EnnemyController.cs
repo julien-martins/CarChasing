@@ -10,27 +10,55 @@ public class EnnemyController : MonoBehaviour
 
     private Vector3 _target;
 
+    private Node _previousNode;
+    private Node _actualNode;
+
+    private Rigidbody _rb;
+
+
     // Start is called before the first frame update
     void Start()
     {
         _brain = GetComponent<Pathfinding>();
+
+        _rb = GetComponent<Rigidbody>();
+
+        _actualNode = _brain.Grid.GetNode(transform.position);
+        _previousNode = _brain.Grid.GetNode(transform.position);
+    }
+
+    void FixedUpdate()
+    {
+        if (_brain.Path.Count <= 0) return;
+
+        _target = _brain.Grid.GetPos(_brain.Path[0]);
+        _target.y = transform.position.y;
+
+        var _targetRot = Quaternion.LookRotation(_target - _rb.transform.position);
+        _rb.transform.rotation = Quaternion.Slerp(_rb.transform.rotation, _targetRot, Speed * Time.deltaTime);
+
+        _rb.transform.position += transform.forward * Speed * Time.deltaTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(_brain.Path.Count <= 0) return;
+        Node node = _brain.Grid.GetNode(transform.position);
+        if (node != null && node != _actualNode )
+        {
+            _previousNode = _actualNode;
+            _actualNode = node;
 
-        _target = _brain.Grid.GetPos(_brain.Path[0]);
-        _target.y = transform.position.y;
-        var _targetRot = Quaternion.LookRotation(_target - transform.position);
-        transform.rotation = Quaternion.Slerp(transform.rotation, _targetRot, Speed * Time.deltaTime);
+            _actualNode.Accesible = false;
 
-        transform.position += transform.forward * Speed * Time.deltaTime;
+            _previousNode.Accesible = true;
+        }
     }
 
     void OnDrawGizmos()
     {
+        if (_brain.Path.Count == 0) return;
+
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, _brain.Grid.GetPos(_brain.Path[0]));
     }

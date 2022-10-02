@@ -41,10 +41,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4902867557135714892}
-  - component: {fileID: 4902867557135714891}
   - component: {fileID: 4902867557135714894}
   - component: {fileID: 4902867557135714929}
   - component: {fileID: 4902867557135714928}
+  - component: {fileID: 3119653972305410434}
   m_Layer: 0
   m_Name: EnemyAstar
   m_TagString: Police
@@ -68,19 +68,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &4902867557135714891
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4902867557135714888}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4902867557135714894
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -125,6 +112,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f554635e7fb0194fbeb7b1aac93e18a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Speed: 2.5
+--- !u!65 &3119653972305410434
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4902867557135714888}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2308617, y: 1.0043304, z: 2.790542}
+  m_Center: {x: -0.016489983, y: -0.0021651983, z: -0.09494269}
 --- !u!1001 &4902867558630120935
 PrefabInstance:
   m_ObjectHideFlags: 0

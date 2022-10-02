@@ -7,6 +7,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
+    public CoinGenerator CoinGenerator;
+
+    public ScoreManager ScoreManager;
+
     public float MoveSpeed = 2.0f;
     public float MaxSpeed = 4.0f;
 
@@ -67,6 +71,16 @@ public class PlayerMovement : MonoBehaviour
         move = Vector3.Lerp(move.normalized, transform.forward, Traction * Time.deltaTime) * move.magnitude;
     }
 
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.CompareTag("Coin"))
+        {
+            Object.Destroy(collider.gameObject);
+            ScoreManager.AddScore(100);
+            CoinGenerator.RemoveCoin();
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Obstacle"))
@@ -77,4 +91,5 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Vous avez ete capture !");
         }
     }
+
 }

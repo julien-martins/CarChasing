@@ -39,6 +39,7 @@ public class Pathfinding : MonoBehaviour
         Node end = Grid.GetNode(targetPos);
 
         if(start == null || end == null) return new();
+        if (start == end) return new();
 
         List<Node> open = new();
         HashSet<Node> closed = new();
@@ -98,6 +99,7 @@ public class Pathfinding : MonoBehaviour
         Node end = Grid.GetNode(endPos);
 
         if (start == null || end == null) return new();
+        if (start == end) return new();
 
         List<Node> Q = new();
 
@@ -107,9 +109,8 @@ public class Pathfinding : MonoBehaviour
             node.Distance = Int32.MaxValue;
             node.Poids = 1;
             node.Pred = null;
-            node.Explored = false;
             
-            if(node.Accesible) Q.Add(node);
+            Q.Add(node);
         }
 
         start.Distance = 0;
@@ -120,29 +121,10 @@ public class Pathfinding : MonoBehaviour
             Q.Sort((n1, n2) => n1.Distance.CompareTo(n2.Distance));
             Node current = Q[0];
             Q.Remove(current);
-
-            //Update neightbors's distance of the current nodes
-            List<Node> neightbors = new();
-            for (int x = -1; x <= 1; x++)
-            {
-                for (int y = -1; y <= 1; y++)
-                {
-                    if (x == 0 && y == 0) continue;
-
-                    int checkX = current.X + x;
-                    int checkY = current.Y + y;
-
-                    if (checkX >= 0 && checkX < Grid.GetWidth() && checkY >= 0 && checkY < Grid.GetHeight())
-                    {
-                        Node node = Grid.GetNodeWithIndex(checkX, checkY);
-                        neightbors.Add(node);
-                    }
-                }
-            }
-
+            
             if (current == end) break;
 
-            foreach (Node neighbor in neightbors)
+            foreach (Node neighbor in Grid.GetNeighbours(current))
             {
                 if (!(Q.Contains(neighbor) || neighbor.Accesible)) continue;
 

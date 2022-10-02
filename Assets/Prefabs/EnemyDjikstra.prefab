@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6994539127909355924}
-  - component: {fileID: 6994539127909355929}
   - component: {fileID: 6994539127909355926}
   - component: {fileID: 6994539127909355927}
   - component: {fileID: 6994539127909355920}
+  - component: {fileID: 3482764285775312303}
   m_Layer: 0
   m_Name: EnemyDjikstra
   m_TagString: Police
@@ -36,19 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &6994539127909355929
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6994539127909355928}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6994539127909355926
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -93,6 +80,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f554635e7fb0194fbeb7b1aac93e18a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Speed: 2.5
+--- !u!65 &3482764285775312303
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6994539127909355928}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.6493917, y: 1.4767687, z: 1}
+  m_Center: {x: -0.004110098, y: 0.23838437, z: 0}
 --- !u!1 &6994539127923158835
 GameObject:
   m_ObjectHideFlags: 0
