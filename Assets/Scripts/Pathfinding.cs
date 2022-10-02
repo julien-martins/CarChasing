@@ -20,13 +20,15 @@ public class Pathfinding : MonoBehaviour
     public Transform endPos;
 
     public Algorithm Algorithm;
-    
+
+    public List<Node> Path = new();
+
     public void ExecutePath()
     {
         if (Algorithm == Algorithm.Astar)
-            FindPathAstar(startPos.position, endPos.position);
+            Path= FindPathAstar(startPos.position, endPos.position);
         else if(Algorithm == Algorithm.Djikstra)
-            FindPathDjikstra(startPos.position, endPos.position);
+            Path = FindPathDjikstra(startPos.position, endPos.position);
     }
 
     #region Astar
@@ -35,6 +37,8 @@ public class Pathfinding : MonoBehaviour
     {
         Node start = Grid.GetNode(startPos);
         Node end = Grid.GetNode(targetPos);
+
+        if(start == null || end == null) return new();
 
         List<Node> open = new();
         HashSet<Node> closed = new();
@@ -92,6 +96,8 @@ public class Pathfinding : MonoBehaviour
     {
         Node start = Grid.GetNode(startPos);
         Node end = Grid.GetNode(endPos);
+
+        if (start == null || end == null) return new();
 
         List<Node> Q = new();
 
@@ -160,6 +166,8 @@ public class Pathfinding : MonoBehaviour
         Node current = end;
         while (current != start)
         {
+            if (current == null) break;
+
             result.Add(current);
 
             current.Active = true;

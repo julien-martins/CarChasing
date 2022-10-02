@@ -47,4 +47,9 @@ public class Node
     {
         return X + "/" + Y + " ==> " + Distance + " | " + Explored;
     }
+
+    public Vector3 GetPos()
+    {
+        return new Vector3(X, 0, Y);
+    }
 }

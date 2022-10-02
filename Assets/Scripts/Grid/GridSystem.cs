@@ -119,7 +119,7 @@ public class GridSystem : MonoBehaviour
                 int checkX = node.X + x;
                 int checkY = node.Y + y;
 
-                if (checkX >= 0 && checkX <= _width && checkY >= 0 && checkY <= _height)
+                if (checkX >= 0 && checkX < _width && checkY >= 0 && checkY < _height)
                 {
                     result.Add(GetNodeWithIndex(checkX, checkY));
                 }
