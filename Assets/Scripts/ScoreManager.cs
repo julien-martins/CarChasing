@@ -7,12 +7,15 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
+    public Player Player;
     [HideInInspector] public int Score = 0;
     public TMP_Text scoreText;
+    public TMP_Text lifeText;
 
     void Update()
     {
         scoreText.text = "Score: " + Score;
+        lifeText.text = "Vie: " + Player.getCurrentLife() + "/" + Player.getMaxLife();
     }
 
     public void ResetScore() => Score = 0;

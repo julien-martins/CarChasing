@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using UnityEditor.SearchService;
 using UnityEditor.TextCore.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Scene = UnityEngine.SceneManagement.Scene;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -10,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     public CoinGenerator CoinGenerator;
 
     public ScoreManager ScoreManager;
+
+    public CameraShake Shake;
 
     public float MoveSpeed = 2.0f;
     public float MaxSpeed = 4.0f;
@@ -28,12 +33,15 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 move;
 
+    private Player _player;
+
     Collider[] colliders;
 
     // Start is called before the first frame update
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _player = GetComponent<Player>();
     }
 
     void Update()
@@ -76,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
         if (collider.gameObject.CompareTag("Coin"))
         {
             Object.Destroy(collider.gameObject);
-            ScoreManager.AddScore(100);
+            ScoreManager.AddScore(10);
             CoinGenerator.RemoveCoin();
         }
     }
@@ -86,9 +94,20 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Obstacle"))
         {
             move *= 0.20f;
+
+            Shake.Start = true;
         } else if (collision.gameObject.CompareTag("Police"))
         {
-            Debug.Log("Vous avez ete capture !");
+            Shake.Start = true;
+
+            _player.RemoveLife();
+            if (_player.getCurrentLife() == 0)
+            {
+                Time.timeScale = 0;
+                Scene scene = SceneManager.GetActiveScene();
+                SceneManager.LoadScene(scene.name);
+                Time.timeScale = 1;
+            }
         }
     }
 
