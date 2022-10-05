@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public bool IsGameOver { get; set; }
+    public bool GameStarting { get; set; }
 
     public GameObject GameOverScreen;
     public Text GameOverScoreText;
@@ -27,12 +28,28 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
+    void Start()
+    {
+        GameStarting = false;
+        Time.timeScale = 0;
+    }
+
     void Update()
     {
-        if (!IsGameOver) return;
-
-        if (Input.GetKeyDown(KeyCode.Space)) Replay();
-        else if (Input.GetKeyDown(KeyCode.Escape)) ToMenu();
+        if (!GameStarting)
+        {
+            if (Input.GetAxisRaw("Horizontal") > 0 || Input.GetAxisRaw("Vertical") > 0)
+            {
+                GameStarting = true;
+                Time.timeScale = 1;
+            }
+        }
+        
+        if (IsGameOver)
+        {
+            if (Input.GetKeyDown(KeyCode.Space)) Replay();
+            else if (Input.GetKeyDown(KeyCode.Escape)) ToMenu();
+        }
     }
 
     public void GameOver()
