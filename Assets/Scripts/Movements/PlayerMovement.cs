@@ -46,7 +46,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-
         if (Input.GetAxisRaw("Drift") > 0)
         {
             Traction = 1.0f;
@@ -103,10 +102,7 @@ public class PlayerMovement : MonoBehaviour
             _player.RemoveLife();
             if (_player.getCurrentLife() == 0)
             {
-                Time.timeScale = 0;
-                Scene scene = SceneManager.GetActiveScene();
-                SceneManager.LoadScene(scene.name);
-                Time.timeScale = 1;
+                GameManager.Instance.GameOver();
             }
         }
     }

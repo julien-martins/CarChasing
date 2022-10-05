@@ -25,6 +25,7 @@ public class CameraShake : MonoBehaviour
 
         while (elapsedTime < duration)
         {
+            if (GameManager.Instance.IsGameOver) break;
             elapsedTime += Time.deltaTime;
             float strength = Curve.Evaluate(elapsedTime / duration);
             transform.position = startPos + Random.insideUnitSphere * strength;
